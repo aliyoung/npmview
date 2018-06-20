@@ -6,7 +6,7 @@ var asyncerr = require('async-err');
 var inspect = require('util').inspect;
 var semver = require('semver');
 
-function view(name, cb) {
+function view(name, keys = [], cb) {
     have(arguments, { name: 'string', cb: 'function' });
 
     if (!name.length)
@@ -20,7 +20,7 @@ function view(name, cb) {
         if (err) return cb(err);
 
         var silent = true;      // make npm not chatty on stdout
-        npm.commands.view([name], silent, function (err, data) {
+        npm.commands.view([name].concat(keys), silent, function (err, data) {
             if (err) return cb(err);
             if (!data) return cb(new Error('No data received.'));
 
